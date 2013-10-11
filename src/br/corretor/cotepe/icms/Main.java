@@ -78,38 +78,40 @@ public class Main {
                 }
                 conteudo.append(linha).append("\n");
             }
-//            BufferedWriter writer = new BufferedWriter(new FileWriter(arquivo));
-//            writer.write(conteudo.toString());
-//            writer.flush();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(arquivo));
+            writer.write(conteudo.toString());
+            writer.flush();
 //            writer.close();
             //registra
             //System.out.println(conteudo.toString());
             // break;
         }
-        for (TipoE14 ccf : e14cooList) {
-            System.out.println(ccf.getCoo());
+        for (TipoE14 tipoE14 : e14cooList) {
+            System.out.println(tipoE14.getCoo());
         }
+    
         
-        StringBuilder passo2Conteudo =new StringBuilder();
-        for (String linha : linhas) {
+        StringBuilder passo2Conteudo = new StringBuilder();
+        for (TipoE14 tipoE14 : e14cooList) {
+            for (String linha : linhas) {
+                if (linha.substring(0, 3).equals("E15")) {
 
-            if (linha.substring(0, 3).equals("E15")) {
-                for (TipoE14 tipoE14 : e14cooList) {
                     String ccf = linha.substring(52, 58);
                     if (ccf.equals(tipoE14.getCcf())) {
                         StringBuilder alterarLinha = new StringBuilder(linha);
                         alterarLinha.replace(47, 52 + 1, tipoE14.getCoo());
-                        linha = alterarLinha.toString();
-                        break;
+                        linha = alterarLinha.toString();                        
                     }
+
                 }
+                passo2Conteudo.append(linha).append("\n");
             }
-            passo2Conteudo.append(linha);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(arquivo));
+            writer.write(passo2Conteudo.toString());
+            writer.flush();
+            writer.close();
         }
-        BufferedWriter writer = new BufferedWriter(new FileWriter(arquivo));
-        writer.write(conteudo.toString());
-        writer.flush();
-        writer.close();
+
     }
 
     private static boolean isContem(TipoE14 tipoE14Comparar, List<TipoE14> e14cooList) {
