@@ -42,8 +42,13 @@ public class MainFrame extends javax.swing.JFrame {
         statusLabel = new javax.swing.JLabel();
         fecharButton = new javax.swing.JButton();
         correcaoButton = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Corretor Ato Cotepe Versão 1.0");
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createTitledBorder("")));
 
@@ -110,21 +115,45 @@ public class MainFrame extends javax.swing.JFrame {
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/br/corretor/cotepe/icms/imagens/logo-ourobits.jpg"))); // NOI18N
+
+        jMenu2.setText("Sobre");
+        jMenu2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenu2ActionPerformed(evt);
+            }
+        });
+
+        jMenuItem1.setText("Desenvolvedor");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu2);
+
+        setJMenuBar(jMenuBar1);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(20, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(38, 38, 38)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(37, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -158,29 +187,29 @@ public class MainFrame extends javax.swing.JFrame {
 
     private void correcaoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_correcaoButtonActionPerformed
         // TODO add your handling code here:
-        
+
         Thread runner = new Thread(new Runnable() {
             @Override
             public void run() {
                 correcaoButton.setEnabled(false);
                 buscaButton.setEnabled(false);
                 buscaArquivoField.setEnabled(false);
-                fecharButton.setEnabled(false);                
+                fecharButton.setEnabled(false);
                 statusLabel.setText("Correção em andamento...");
 
 
                 Thread runner2 = new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        
+
                         CorretorAtoCotepe corretorAtoCotepe = new CorretorAtoCotepe();
                         try {
-                            
-                            if(StringHelper.isBlank(
-                                buscaArquivoField.getText())){
+
+                            if (StringHelper.isBlank(
+                                    buscaArquivoField.getText())) {
                                 throw new NullPointerException("Localize o arquivo!");
                             }
-                            
+
                             boolean result = corretorAtoCotepe.corrigir(buscaArquivoField.getText());
 
                             if (result) {
@@ -188,16 +217,16 @@ public class MainFrame extends javax.swing.JFrame {
                             } else {
                                 JOptionPane.showMessageDialog(MainFrame.this, "O Documento não possui erros!");
                             }
-                            
-                        } catch (Exception ex) {                            
+
+                        } catch (Exception ex) {
                             JOptionPane.showMessageDialog(MainFrame.this, ex.getMessage(), "Mensagem de erro", JOptionPane.ERROR_MESSAGE);
-                        } finally{
+                        } finally {
                             statusLabel.setText("Correção finalizada...");
                             buscaArquivoField.setEnabled(true);
                             fecharButton.setEnabled(true);
                             buscaButton.setEnabled(true);
                             correcaoButton.setEnabled(true);
-                        } 
+                        }
                     }
                 });
                 runner2.start();
@@ -212,6 +241,17 @@ public class MainFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         System.exit(0);
     }//GEN-LAST:event_fecharButtonActionPerformed
+
+    private void jMenu2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenu2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenu2ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        SobreDialog sobreDialog = new SobreDialog(this, true);
+
+        sobreDialog.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -253,6 +293,10 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JButton correcaoButton;
     private javax.swing.JButton fecharButton;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
