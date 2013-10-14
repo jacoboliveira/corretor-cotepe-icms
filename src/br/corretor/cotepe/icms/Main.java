@@ -34,7 +34,7 @@ public class Main {
 
         //   Locale.setDefault(new Locale("pt","BR"));
         File arquivo = new File("c:/teste/TDMBE051275610000142726_20131007_081413.TXT");
-        String enconding = "UTF-8";//"ISO-8859-1"
+        String enconding = "ISO-8859-1";//"ISO-8859-1"
         List<String> linhas = FileHelper.readLines(arquivo, enconding);
 
         List<ReducoesZ> reducoesZList = new ArrayList<ReducoesZ>();
@@ -82,7 +82,7 @@ public class Main {
 ////                        System.out.println(reducoesZ.getCoo());
                     }
                 }
-                conteudo.append(linha).append("\n");
+                conteudo.append(linha).append(File.separator.equals("\\")?"\r\n":"\n");
             }
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
                     new FileOutputStream(arquivo), enconding));
@@ -114,7 +114,7 @@ public class Main {
                     }
 
                 }
-                conteudo.append(linha).append("\n");
+                conteudo.append(linha).append(File.separator.equals("\\")?"\r\n":"\n");
             }
             BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
                     new FileOutputStream(arquivo), enconding));
