@@ -23,19 +23,30 @@ public class Testes {
 
     public static void main(String args[]) throws IOException {
 
+        Thread run = new Thread(new Runnable() {
 
-        String enconding = "ISO-8859-1";
-        File arquivo = new File("c:/teste/TDMBE051275610000142726_20131007_081413.TXT");
-        List<String> linhas = FileUtils.readLines(arquivo, enconding);
-        StringBuilder b = new StringBuilder();
-        for (String linha : linhas) {   
+            @Override
+            public void run() {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+
             
-            b.append(linha).append(File.separator.equals("\\")?"\r\n":"\n");
-        }
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arquivo), enconding));
-        writer.write(b.toString());
-        writer.flush();
-        writer.close();
+        
+        
+        
+//        String enconding = "ISO-8859-1";
+//        File arquivo = new File("c:/teste/TDMBE051275610000142726_20131007_081413.TXT");
+//        List<String> linhas = FileUtils.readLines(arquivo, enconding);
+//        StringBuilder b = new StringBuilder();
+//        for (String linha : linhas) {   
+//            
+//            b.append(linha).append(File.separator.equals("\\")?"\r\n":"\n");
+//        }
+//        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arquivo), enconding));
+//        writer.write(b.toString());
+//        writer.flush();
+//        writer.close();
         //System.out.println(File.separator);
 
 //        String cooE12 = "007965";
