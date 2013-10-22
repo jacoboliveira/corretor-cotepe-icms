@@ -5,8 +5,16 @@
 package br.corretor.cotepe.icms.view;
 
 import br.corretor.cotepe.icms.util.CorretorAtoCotepe;
+import br.corretor.cotepe.icms.util.FileHelper;
 import br.corretor.cotepe.icms.util.StringHelper;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -42,6 +50,7 @@ public class MainFrame extends javax.swing.JFrame {
         statusLabel = new javax.swing.JLabel();
         fecharButton = new javax.swing.JButton();
         correcaoButton = new javax.swing.JButton();
+        notaPAButton = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu2 = new javax.swing.JMenu();
@@ -81,6 +90,14 @@ public class MainFrame extends javax.swing.JFrame {
             }
         });
         jPanel2.add(correcaoButton);
+
+        notaPAButton.setText("Nota PA");
+        notaPAButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                notaPAButtonActionPerformed(evt);
+            }
+        });
+        jPanel2.add(notaPAButton);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -247,11 +264,80 @@ public class MainFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenu2ActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // TODO add your handling code here:
         SobreDialog sobreDialog = new SobreDialog(this, true);
 
         sobreDialog.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void notaPAButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_notaPAButtonActionPerformed
+        try {
+            if (StringHelper.isBlank(
+                    buscaArquivoField.getText())) {
+                throw new NullPointerException("Localize o arquivo!");
+            }
+            
+            File arquivo = new File(buscaArquivoField.getText());
+            String enconding = "ISO-8859-1";
+            List<String> linhas = FileHelper.readLines(arquivo, enconding);
+            StringBuilder conteudo = new StringBuilder();
+            for (String linha : linhas) {
+                String a = linha.substring(0, 3);
+                if (a.equals("E05") || a.equals("E06") || a.equals("E08")
+                        || a.equals("E09") || a.equals("E10") || a.equals("E11")
+                        || a.equals("E12") || a.equals("E13")) {
+                    continue;
+                }
+                conteudo.append(linha).append(File.separator.equals("\\") ? "\r\n" : "\n");
+            }
+
+
+            JFileChooser chooser = new JFileChooser();
+
+            chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+            chooser.setMultiSelectionEnabled(false);
+
+            int choice = chooser.showSaveDialog(this);
+
+            if (choice == JFileChooser.APPROVE_OPTION) {
+                File caminhoEscolhido = chooser.getSelectedFile();
+                String nomeArquivo = "notapa_" + arquivo.getName();
+                
+                boolean arquivoIgual = false;
+                for (File file : caminhoEscolhido.listFiles()) {
+                    if (nomeArquivo.equals(file.getName())) {
+                        arquivoIgual = true;
+                        break;
+                    }
+                }
+                if (arquivoIgual) {
+                    int opcao = JOptionPane.showConfirmDialog(this, "Este arquivo já existe deseja sobrescrever?",
+                            "Pergunta", JOptionPane.OK_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE);
+                    if (opcao == JOptionPane.OK_OPTION) {
+                        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                                new FileOutputStream(new File(caminhoEscolhido.getPath() + nomeArquivo)), enconding));
+                        writer.write(conteudo.toString());
+                        writer.flush();
+                        writer.close();
+                    }
+                    JOptionPane.showMessageDialog(this, "Arquivo sobrescrito com sucesso!");
+                    return;
+                }
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(
+                        new FileOutputStream(new File(caminhoEscolhido.getPath()+File.separator + nomeArquivo)), enconding));
+                writer.write(conteudo.toString());
+                writer.flush();
+                writer.close();
+                JOptionPane.showMessageDialog(this, "Arquivo modificado com sucesso!");
+            }
+
+
+
+        } catch (Exception ex) {
+            Logger.getLogger(MainFrame.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(MainFrame.this, ex.getMessage(), "Mensagem de erro", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_notaPAButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -300,6 +386,7 @@ public class MainFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JButton notaPAButton;
     private javax.swing.JLabel statusLabel;
     // End of variables declaration//GEN-END:variables
 }

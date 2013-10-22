@@ -169,6 +169,14 @@
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="correcaoButtonActionPerformed"/>
               </Events>
             </Component>
+            <Component class="javax.swing.JButton" name="notaPAButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Nota PA"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="notaPAButtonActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
       </SubComponents>
